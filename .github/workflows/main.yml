@@ -18,3 +18,8 @@ jobs:
         run: |
           echo "Você criou a sua primeira pipeline workflow"
           echo "Parabéns!!"
+      - name: "Script Python"          
+        run: |
+          variavel = "Hi there"
+          print(variavel)
+        shell: python  
