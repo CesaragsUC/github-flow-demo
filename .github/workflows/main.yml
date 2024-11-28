@@ -7,19 +7,26 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  primeiro-job:
+     name: "Primeiro Job"
+     runs-on: ubuntu-latest
+     steps:
+       - name: Primeira ação
+         run: echo "Hello world from pipeline !!"
+
+       - name: Segunda ação
+         run: |
+           echo "Você criou a sua primeira pipeline workflow"
+           echo "Parabéns!!"
+       - name: "Script Python"          
+         run: |
+           variavel = "Hi there"
+           print(variavel)
+         shell: python
+
+  segundo-job:
+    name: "Instalação ambiente Node.Js"
     runs-on: ubuntu-latest
-
     steps:
-      - name: Primeira ação
-        run: echo "Hello world from pipeline !!"
-
-      - name: Segunda ação
-        run: |
-          echo "Você criou a sua primeira pipeline workflow"
-          echo "Parabéns!!"
-      - name: "Script Python"          
-        run: |
-          variavel = "Hi there"
-          print(variavel)
-        shell: python  
+      - name: Verificação da versaõ do Node.Js
+        run: node --version    
