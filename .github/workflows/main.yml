@@ -1,4 +1,4 @@
-name: primeira-pipeline
+name: primeira-pipeline & variaveis de ambiente
 
 on:
   push:
@@ -6,18 +6,27 @@ on:
       - main
   workflow_dispatch:
 
+env:
+   ENV_WORKFLOW: Valor workflow # scopo: somente desse workflow
+
 jobs:
   primeiro-job:
      name: "Primeiro Job"
      runs-on: ubuntu-latest
+     env:
+      ENV_ACTION_JOB: Valor do Env Action # scopo: somente dentro dessa Action "primeiro-job"
      steps:
        - name: Primeira ação
          run: echo "Hello world from pipeline !!"
-
+         env:
+           ENV_JOB: Valor do Env Job # scopo: somente dentro desse job
        - name: Segunda ação
          run: |
-           echo "Você criou a sua primeira pipeline workflow"
-           echo "Parabéns!!"
+              echo $ENV_WORKFLOW
+              echo $ENV_ACTION_JOB
+              echo $ENV_JOB
+              echo "Você criou a sua primeira pipeline workflow"
+              echo "Parabéns!!"
        - name: "Script Python"          
          run: |
            variavel = "Hi there"
@@ -37,3 +46,13 @@ jobs:
           node-version: '20.13.1'
       - name: Verificação da versão após instalção do Node.Js
         run: node --version 
+
+  terceiro-job:
+    name: "Variaveis ambiente"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Listando variaveis
+        run: |
+             echo $ENV_WORKFLOW
+             echo $ENV_ACTION_JOB
+             echo $ENV_JOB
