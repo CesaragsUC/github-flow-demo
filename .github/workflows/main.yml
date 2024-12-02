@@ -1,64 +1,33 @@
-name: primeira-pipeline & variaveis de ambiente
+name: primeira-pipeline & variaveis de ambiente e Contexto
 
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-
+on: 
+    push:
+        branches: [main]
 env:
-   ENV_WORKFLOW: Valor workflow # scopo: somente desse workflow
-
+  ENV_WORKFLOW: "Valor WORKFLOW"
 jobs:
-  primeiro-job:
-     name: "Primeiro Job"
-     runs-on: ubuntu-latest
-     env:
-      ENV_JOB: Valor do Env Primeiro Job # scopo: somente dentro dessa Job "primeiro-job"
-     steps:
-       - name: Primeira ação
-         run: echo "Hello world from pipeline !!"
-         env:
-           ENV_ACTION: Valor do Env Actions -> Primeira ação  # scopo: somente dentro dessa Action
-       - name: Segunda ação
-         run: |
-              echo $ENV_WORKFLOW
-              echo $ENV_ACTION_JOB
-              echo $ENV_JOB
-              echo "Você criou a sua primeira pipeline workflow"
-              echo "Parabéns!!"
-       - name: "Script Python"          
-         run: |
-           variavel = "Hi there"
-           print(variavel)
-         shell: python
-
-  segundo-job:
-    name: "Instalação ambiente Node.Js"
-    runs-on: ubuntu-latest
-    needs: primeiro-job # informa que o segundo job depende do sucesso do "primeiro-job".
-    env:
-      ENV_JOB: Valor do Env Segundo Job # scopo: somente dentro desse job
-    steps:
-      - name: Verificação da versão do Node.Js
-        run: node --version    
-      - name: Definição da versão do Node.Js v20.13.1
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.13.1'
-      - name: Verificação da versão após instalção do Node.Js
-        run: node --version 
-      - name: Segunda ação
-        run: |
-             echo $ENV_JOB
-
-  terceiro-job:
-    needs: segundo-job
-    name: "Variaveis ambiente"
+  contextos:
     runs-on: ubuntu-latest
     env:
-      ENV_JOB: Valor do Env Terceiro Job # scopo: somente dentro desse job
+        ENV_JOB: "Valor JOB CONTEXT"
     steps:
-      - name: Listando variaveis
-        run: |
-             echo $ENV_JOB
+      - name: Contexto github
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Contexto env
+        env:
+          ENV_CONTEXT: ${{ toJson(env) }}
+        run: echo "$ENV_CONTEXT"
+      - name: Contexto job
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
+      - name: Contexto steps
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
+      - name: Contexto runner
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
